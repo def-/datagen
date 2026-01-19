@@ -7,10 +7,12 @@ import asyncGenerator from './utils/asyncGenerator.js';
 
 export default async function mysqlDataGenerator({
     schema,
+    start,
     iterations,
     initialSchema
 }: {
     schema: string;
+    start: number,
     iterations: number;
     initialSchema: string;
 }): Promise<void> {
@@ -26,11 +28,11 @@ export default async function mysqlDataGenerator({
         connection = await mysqlConfig();
     }
 
-    for await (const iteration of asyncGenerator(iterations)) {
+    for await (const iteration of asyncGenerator(start, iterations)) {
         global.iterationIndex = iteration;
         const megaRecord = await generateMegaRecord(schema);
 
-        if (iteration === 0) {
+        if (iteration === start) {
             if (global.debug && global.dryRun) {
                 alert({
                     type: `success`,

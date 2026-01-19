@@ -24,7 +24,7 @@ export default async function createTopics(megaRecord: any): Promise<void> {
                 {
                     topic,
                     replicationFactor,
-                    numPartitions: 1,
+                    numPartitions: 32,
                     configEntries: [
                         {
                             name: 'cleanup.policy',

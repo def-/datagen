@@ -28,6 +28,12 @@ program
     )
     .addOption(
         new Option(
+            '-S, --start <int>',
+            'Start for records',
+        ).default('1').argParser((value) => parseInt(value, 10))
+    )
+    .addOption(
+        new Option(
             '-n, --number <int>',
             'Number of records to generate. For infinite records, use -1'
         ).default('10').argParser((value) => parseInt(value, 10))
@@ -119,6 +125,7 @@ if (!global.wait) {
     await dataGenerator({
         format: options.format,
         schema: parsedSchema,
+	start: options.start,
         iterations: options.number,
         initialSchema: options.schema
     })

@@ -7,6 +7,7 @@ import webhookDataGenerator from './webhookDataGenerator.js';
 interface GeneratorOptions {
     format: string;
     schema: string;
+    start: number,
     iterations: number;
     initialSchema: string;
 }
@@ -14,6 +15,7 @@ interface GeneratorOptions {
 export default async function dataGenerator({
     format,
     schema,
+    start,
     iterations,
     initialSchema
 }: GeneratorOptions): Promise<void> {
@@ -29,7 +31,7 @@ export default async function dataGenerator({
                     process.exit(1);
                 }
 
-                await postgresDataGenerator({ schema, iterations, initialSchema });
+                await postgresDataGenerator({ schema, start, iterations, initialSchema });
                 break;
             case 'mysql':
                 if (!initialSchema.endsWith('.sql')) {
@@ -41,13 +43,13 @@ export default async function dataGenerator({
                     process.exit(1);
                 }
 
-                await mysqlDataGenerator({ schema, iterations, initialSchema });
+                await mysqlDataGenerator({ schema, start, iterations, initialSchema });
                 break;
             case 'webhook':
-                await webhookDataGenerator({ schema, iterations, initialSchema });
+                await webhookDataGenerator({ schema, start, iterations, initialSchema });
                 break;
             default:
-                await kafkaDataGenerator({ format, schema, iterations, initialSchema });
+                await kafkaDataGenerator({ format, schema, start, iterations, initialSchema });
                 break;
         }
     } catch (error) {

@@ -10,11 +10,13 @@ import asyncGenerator from './utils/asyncGenerator.js';
 export default async function kafkaDataGenerator({
     format,
     schema,
+    start,
     iterations,
     initialSchema
 }: {
     format: string;
     schema: string;
+    start: number, 
     iterations: number;
     initialSchema: string;
 }): Promise<void> {
@@ -31,11 +33,11 @@ export default async function kafkaDataGenerator({
         producer = await KafkaProducer.create(outputFormat);
     }
 
-    for await (const iteration of asyncGenerator(iterations)) {
+    for await (const iteration of asyncGenerator(start, iterations)) {
         global.iterationIndex = iteration;
         const megaRecord = await generateMegaRecord(schema);
 
-        if (iteration === 0) {
+        if (iteration === start) {
             await producer?.prepare(megaRecord);
             if (global.debug && global.dryRun && format === 'avro') {
                 await AvroFormat.getAvroSchemas(megaRecord);

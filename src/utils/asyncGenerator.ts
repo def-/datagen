@@ -1,5 +1,5 @@
-export default async function* asyncGenerator(iterations) {
-    let i = 0;
+export default async function* asyncGenerator(start, iterations) {
+    let i = start;
     // If number is -1, generate infinite records
     if (iterations === -1) {
         while (true) {
@@ -7,7 +7,7 @@ export default async function* asyncGenerator(iterations) {
             i++;
         }
     } else {
-        for (i; i < iterations; i++) {
+        for (i; i < start + iterations; i++) {
             yield i;
         }
     }
